@@ -814,11 +814,42 @@ h2.section {
 
 /* ----------------------------------------------------- fine-print dialog */
 
+/* Small mark, full-size tap target: the 44px button is invisible around it. */
 .info-btn {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  margin-right: -11px;
+  padding: 0;
+  border: none;
+  background: none;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.info-btn > span {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  color: var(--muted);
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 13px;
   line-height: 1;
-  color: var(--ink-soft);
+  display: grid;
+  place-items: center;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.info-btn:hover > span {
+  color: var(--ink);
+  border-color: var(--muted);
+}
+
+.info-btn:focus-visible > span {
+  outline: 2px solid var(--terracotta);
+  outline-offset: 3px;
 }
 
 .sheet {

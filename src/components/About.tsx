@@ -18,7 +18,7 @@ export default function About() {
   return (
     <>
       <button
-        className="icon-btn info-btn"
+        className="info-btn"
         onClick={() => setOpen(true)}
         aria-label="About this app and the fine print"
       >
