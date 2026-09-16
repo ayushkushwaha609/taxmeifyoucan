@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { formatPaise, parseRupeesToPaise } from '../lib/money';
-import { DEFAULT_CHUNK_PAISE, MAX_STEPS, splitPaise } from '../lib/split';
+import { CHUNK_LABEL, DEFAULT_CHUNK_PAISE, MAX_STEPS, splitPaise } from '../lib/split';
 import { payeeLabel, type UpiPayload } from '../lib/upi';
 
 interface Props {
@@ -108,7 +108,7 @@ export default function Confirm({ payload, onConfirm, onCancel }: Props) {
       {!editing && totalPaise !== null && (
         <div className="card card-tight" style={{ marginTop: 14 }}>
           <p className="eyebrow">
-            The split — {chunks.length} {chunks.length === 1 ? 'payment' : 'payments'} of ₹2,000 max
+            The split — {chunks.length} {chunks.length === 1 ? 'payment' : 'payments'} of {CHUNK_LABEL} max
           </p>
           <div className="split-preview">
             {chunks.slice(0, 12).map((paise, i) => (
@@ -123,7 +123,7 @@ export default function Confirm({ payload, onConfirm, onCancel }: Props) {
           </div>
           {chunks.length === 1 && (
             <p className="fineprint" style={{ marginTop: 14 }}>
-              Already under ₹2,000 — nothing to split. This is just one normal payment.
+              Already under {CHUNK_LABEL} — nothing to split. This is just one normal payment.
             </p>
           )}
         </div>

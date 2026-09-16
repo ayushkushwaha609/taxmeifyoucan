@@ -3,7 +3,7 @@
 **Bada payment? Chhote steps mein.**
 
 A mobile-first PWA that reads a merchant's UPI QR and breaks the amount into
-₹2,000 payment steps, launching one UPI intent per step. Built to the
+₹1,999 payment steps, launching one UPI intent per step. Built to the
 `UPI_Splitter_PRD_v1` spec.
 
 > **This is a satirical/experimental payment-flow prototype.** It does not remove
@@ -16,7 +16,9 @@ A mobile-first PWA that reads a merchant's UPI QR and breaks the amount into
 1. **Scan or upload** a UPI QR. Decoding happens on-device (`qr-scanner`); no image
    is ever uploaded.
 2. **Confirm** the payee and amount. The payee VPA is shown verbatim and never altered.
-3. **Split** the total into ₹2,000 chunks plus a remainder (₹9,500 → 4 × ₹2,000 + ₹1,500).
+3. **Split** the total into ₹1,999 chunks plus a remainder (₹9,500 → 4 × ₹1,999 + ₹1,504).
+   ₹1,999 does not divide evenly, so a small tail step is normal and expected —
+   ₹10,000 becomes 5 × ₹1,999 + ₹5.
 4. **Pay** each step via a `upi://pay` intent; the OS shows whichever UPI apps are installed.
 5. **Confirm by hand.** Returning from the payment app asks "did you complete this?" —
    it never assumes success. There's a 7-second Undo on each confirmation.
@@ -67,7 +69,9 @@ Pay button will report that nothing opened, which is the intended fallback.
 ## Not built (out of scope per the PRD)
 
 No backend, accounts, payment verification, provider APIs, reconciliation or
-analytics. No custom chunk size — ₹2,000 is fixed for v1.
+analytics. No custom chunk size — ₹1,999 is fixed for v1, in `DEFAULT_CHUNK_PAISE`
+(`src/lib/split.ts`). UI copy reads the ceiling from `CHUNK_LABEL` rather than
+hardcoding it, so changing the constant changes the wording too.
 
 ## Deployment
 
