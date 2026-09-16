@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { formatPaise } from '../lib/money';
-import { maskVpa, payeeLabel, type UpiPayload } from '../lib/upi';
+import { payeeLabel, type UpiPayload } from '../lib/upi';
+import { renderShareCard } from '../lib/shareCard';
 import type { Step } from './Queue';
 
 interface Props {
@@ -10,28 +11,70 @@ interface Props {
 }
 
 export default function Complete({ payload, steps, onRestart }: Props) {
-  const [shared, setShared] = useState<string | null>(null);
+  const [cardUrl, setCardUrl] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
+  const blobRef = useRef<Blob | null>(null);
 
   const totalPaise = steps.reduce((sum, s) => sum + s.paise, 0);
   const confirmed = steps.filter((s) => s.done);
   const confirmedPaise = confirmed.reduce((sum, s) => sum + s.paise, 0);
   const name = payeeLabel(payload);
 
-  // The share card carries no full UPI ID — the handle is masked.
+  useEffect(() => {
+    let url: string | null = null;
+    let cancelled = false;
+
+    renderShareCard({
+      merchant: name,
+      totalPaise,
+      steps: steps.map((s) => s.paise),
+      paidCount: confirmed.length,
+    })
+      .then((blob) => {
+        if (cancelled) return;
+        blobRef.current = blob;
+        url = URL.createObjectURL(blob);
+        setCardUrl(url);
+      })
+      .catch(() => {
+        if (!cancelled) setStatus('Could not draw the summary card on this browser.');
+      });
+
+    return () => {
+      cancelled = true;
+      if (url) URL.revokeObjectURL(url);
+    };
+    // The session is finished, so these inputs never change while mounted.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   async function share() {
-    const text =
-      `${formatPaise(totalPaise)} to ${name} (${maskVpa(payload.pa)}), ` +
-      `broken into ${steps.length} steps. ${confirmed.length} marked paid by hand. ` +
-      `Bada payment, chhote steps mein.`;
+    const blob = blobRef.current;
+    if (!blob) return;
+
+    const file = new File([blob], 'chhutta-summary.png', { type: 'image/png' });
+    const caption = `${formatPaise(totalPaise)} in ${steps.length} steps. Bada payment, chhote steps mein.`;
+
     try {
-      if (navigator.share) {
-        await navigator.share({ text });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], text: caption });
         return;
       }
-      await navigator.clipboard.writeText(text);
-      setShared('Summary copied to your clipboard.');
+    } catch (err) {
+      // A cancelled share sheet is not a failure worth reporting.
+      if ((err as { name?: string })?.name === 'AbortError') return;
+    }
+
+    // No share sheet (desktop, mostly) — hand over the PNG as a download.
+    try {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'chhutta-summary.png';
+      link.click();
+      URL.revokeObjectURL(link.href);
+      setStatus('Card saved as chhutta-summary.png.');
     } catch {
-      setShared('Could not share from this browser.');
+      setStatus('Sharing is not available here — long-press the card to save it.');
     }
   }
 
@@ -75,9 +118,26 @@ export default function Complete({ payload, steps, onRestart }: Props) {
         </span>
       </div>
 
-      {shared && (
+      <div className="share-card">
+        <p className="eyebrow" style={{ marginBottom: 10 }}>
+          Your share card
+        </p>
+        {cardUrl ? (
+          <img
+            src={cardUrl}
+            alt={`Summary card: ${formatPaise(totalPaise)} paid to ${name} in ${steps.length} steps, ${confirmed.length} marked paid.`}
+          />
+        ) : (
+          <div className="share-card-skeleton" aria-hidden="true" />
+        )}
+        <p className="fineprint" style={{ marginTop: 10 }}>
+          No UPI ID on the card — just the shop name. Long-press to save it yourself.
+        </p>
+      </div>
+
+      {status && (
         <p className="fineprint" style={{ marginTop: 12 }} role="status">
-          {shared}
+          {status}
         </p>
       )}
 
@@ -87,8 +147,8 @@ export default function Complete({ payload, steps, onRestart }: Props) {
         <button className="btn btn-primary" onClick={onRestart}>
           Start over
         </button>
-        <button className="btn btn-ghost" onClick={share}>
-          Share the summary
+        <button className="btn btn-ghost" onClick={share} disabled={!cardUrl}>
+          Share the card
         </button>
       </div>
 

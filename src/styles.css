@@ -716,3 +716,31 @@ h2.section {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ----------------------------------------------------------- share card */
+
+.share-card {
+  margin-top: 22px;
+}
+
+.share-card img {
+  display: block;
+  width: 100%;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+}
+
+.share-card-skeleton {
+  width: 100%;
+  aspect-ratio: 1080 / 1350;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: linear-gradient(100deg, var(--cream-deep) 30%, var(--paper) 50%, var(--cream-deep) 70%)
+    0 0 / 300% 100%;
+  animation: shimmer 1.3s linear infinite;
+}
+
+@keyframes shimmer {
+  to { background-position: -150% 0; }
+}

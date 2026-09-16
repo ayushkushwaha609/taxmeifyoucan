@@ -20,7 +20,8 @@ A mobile-first PWA that reads a merchant's UPI QR and breaks the amount into
 4. **Pay** each step via a `upi://pay` intent; the OS shows whichever UPI apps are installed.
 5. **Confirm by hand.** Returning from the payment app asks "did you complete this?" —
    it never assumes success. There's a 7-second Undo on each confirmation.
-6. **Summary** at the end: total, steps, and how many you marked paid.
+6. **Summary** at the end: total, steps, and how many you marked paid — plus a
+   1080x1350 share card rendered on-canvas, with the merchant name but no UPI ID.
 
 ## Running it
 
