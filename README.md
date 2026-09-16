@@ -55,3 +55,16 @@ Pay button will report that nothing opened, which is the intended fallback.
 
 No backend, accounts, payment verification, provider APIs, reconciliation or
 analytics. No custom chunk size — ₹2,000 is fixed for v1.
+
+## Deployment
+
+Pushed to `main` → GitHub Actions builds and publishes to GitHub Pages:
+**https://ayushkushwaha609.github.io/taxmeifyoucan/**
+
+The site is served from a subpath, so `vite.config.ts` sets `base` (and the
+manifest's `start_url`/`scope`) to `/taxmeifyoucan/`. Override with
+`DEPLOY_BASE=/ npm run build` for a root-domain host.
+
+HTTPS matters here: the camera scanner and the service worker both refuse to
+run on plain `http://`, so testing over the LAN via `npm run dev` gives you the
+upload path but not the camera.
