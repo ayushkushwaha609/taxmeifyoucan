@@ -6,29 +6,25 @@ import { buildUpiIntent, parseUpiQr } from '../upi';
 const R = (rupees: number) => rupees * 100;
 
 describe('split engine', () => {
-  it('turns 10,000 into five 1,999 steps plus the 5 rupee tail', () => {
-    expect(splitPaise(R(10000))).toEqual([R(1999), R(1999), R(1999), R(1999), R(1999), R(5)]);
+  it('turns 10,000 into exactly five 2,000 steps', () => {
+    expect(splitPaise(R(10000))).toEqual([R(2000), R(2000), R(2000), R(2000), R(2000)]);
   });
 
-  it('turns 9,500 into four 1,999 steps and a 1,504 remainder', () => {
-    expect(splitPaise(R(9500))).toEqual([R(1999), R(1999), R(1999), R(1999), R(1504)]);
+  it('turns 9,500 into four 2,000 steps and a 1,500 remainder', () => {
+    expect(splitPaise(R(9500))).toEqual([R(2000), R(2000), R(2000), R(2000), R(1500)]);
   });
 
-  it('leaves an exact 1,999 as a single payment', () => {
-    expect(splitPaise(R(1999))).toEqual([R(1999)]);
+  it('leaves an exact 2,000 as a single payment', () => {
+    expect(splitPaise(R(2000))).toEqual([R(2000)]);
   });
 
-  it('splits 2,000 into 1,999 and a one rupee tail', () => {
-    expect(splitPaise(R(2000))).toEqual([R(1999), R(1)]);
-  });
-
-  it('leaves anything under 1,999 as a single payment of the same amount', () => {
+  it('leaves anything under 2,000 as a single payment of the same amount', () => {
     expect(splitPaise(R(1200))).toEqual([R(1200)]);
     expect(splitPaise(1)).toEqual([1]);
   });
 
   it('never puts more than the ceiling into any one step', () => {
-    for (const rupees of [1, 999, 1999, 2000, 4000, 9500, 10000, 12345.67, 99999]) {
+    for (const rupees of [1, 999, 2000, 2001, 4000, 9500, 10000, 12345.67, 99999]) {
       const total = Math.round(rupees * 100);
       for (const chunk of splitPaise(total)) {
         expect(chunk).toBeLessThanOrEqual(DEFAULT_CHUNK_PAISE);
@@ -37,7 +33,7 @@ describe('split engine', () => {
   });
 
   it('never emits a zero-value chunk and always re-sums to the total', () => {
-    for (const rupees of [1, 999, 1999, 2000, 4000, 9500, 10000, 12345.67]) {
+    for (const rupees of [1, 999, 2000, 2001, 4000, 9500, 10000, 12345.67]) {
       const total = Math.round(rupees * 100);
       const chunks = splitPaise(total);
       expect(chunks.every((c) => c > 0)).toBe(true);
@@ -46,8 +42,8 @@ describe('split engine', () => {
   });
 
   it('handles paise remainders without floating-point drift', () => {
-    expect(splitPaise(R(1999) + 1)).toEqual([R(1999), 1]);
-    expect(splitPaise(Math.round(5997.05 * 100))).toEqual([R(1999), R(1999), R(1999), 5]);
+    expect(splitPaise(R(2000) + 1)).toEqual([R(2000), 1]);
+    expect(splitPaise(Math.round(6000.05 * 100))).toEqual([R(2000), R(2000), R(2000), 5]);
   });
 
   it('rejects junk totals', () => {
@@ -57,11 +53,11 @@ describe('split engine', () => {
 
   it('respects a non-default chunk size', () => {
     expect(splitPaise(R(10000), R(5000))).toEqual([R(5000), R(5000)]);
-    expect(DEFAULT_CHUNK_PAISE).toBe(R(1999));
+    expect(DEFAULT_CHUNK_PAISE).toBe(R(2000));
   });
 
   it('labels the chunk ceiling for the UI', () => {
-    expect(CHUNK_LABEL.replace(/ /g, ' ')).toBe('₹1,999');
+    expect(CHUNK_LABEL.replace(/ /g, ' ')).toBe('₹2,000');
   });
 });
 
