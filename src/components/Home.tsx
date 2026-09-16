@@ -1,3 +1,5 @@
+import InstallCard from './InstallCard';
+
 interface Props {
   onScan: () => void;
   onUpload: () => void;
@@ -33,6 +35,8 @@ export default function Home({ onScan, onUpload }: Props) {
           Upload a QR image
         </button>
       </div>
+
+      <InstallCard />
 
       <div className="grow" />
 

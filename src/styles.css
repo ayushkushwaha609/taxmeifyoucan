@@ -744,3 +744,70 @@ h2.section {
 @keyframes shimmer {
   to { background-position: -150% 0; }
 }
+
+/* -------------------------------------------------------- install prompt */
+
+.install-card {
+  margin-top: 28px;
+  padding: 18px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--paper);
+}
+
+.install-head {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+}
+
+.install-mark {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 12px;
+  background: linear-gradient(140deg, var(--marigold), var(--terracotta));
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+
+.install-title {
+  margin: 0 0 3px;
+  font-weight: 650;
+  font-size: 15.5px;
+  letter-spacing: -0.01em;
+}
+
+.install-close {
+  margin-left: auto;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  border-radius: 50%;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+}
+.install-close:hover { background: var(--cream-deep); color: var(--ink); }
+
+.install-btn {
+  margin-top: 16px;
+  min-height: 50px;
+  font-size: 15.5px;
+}
+
+.install-steps {
+  margin: 14px 0 2px;
+  padding-left: 20px;
+  display: grid;
+  gap: 7px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.install-steps strong { font-weight: 650; color: var(--ink); }

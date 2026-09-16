@@ -23,6 +23,18 @@ A mobile-first PWA that reads a merchant's UPI QR and breaks the amount into
 6. **Summary** at the end: total, steps, and how many you marked paid — plus a
    1080x1350 share card rendered on-canvas, with the merchant name but no UPI ID.
 
+## Installing it
+
+The home screen offers an install prompt when the browser says the app
+qualifies. On Android Chrome that means capturing `beforeinstallprompt` and
+deferring it to an **Install Chhutta** button; iOS Safari fires no such event,
+so it shows the Share > Add to Home Screen steps instead. Dismissing the card
+is remembered in `localStorage`, and it never appears once the app is running
+standalone.
+
+Installability needs HTTPS and a registered service worker, so the prompt will
+not appear on `npm run dev` over the LAN — only on a deployed build.
+
 ## Running it
 
 ```bash
