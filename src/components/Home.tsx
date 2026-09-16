@@ -9,7 +9,7 @@ interface Props {
 export default function Home({ onScan, onUpload }: Props) {
   return (
     <div className="screen home-hero">
-      <p className="eyebrow">Experimental payment-flow toy</p>
+      <p className="eyebrow">Built on jugaad</p>
       <h1 className="display">
         Bada payment?
         <br />
