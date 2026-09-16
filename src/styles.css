@@ -811,3 +811,95 @@ h2.section {
 }
 
 .install-steps strong { font-weight: 650; color: var(--ink); }
+
+/* ----------------------------------------------------- fine-print dialog */
+
+.info-btn {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1;
+  color: var(--ink-soft);
+}
+
+.sheet {
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: 460px;
+  width: calc(100% - 28px);
+  max-height: 88dvh;
+  margin: auto auto 0;
+  color: var(--ink);
+}
+
+.sheet::backdrop {
+  background: rgba(23, 19, 15, 0.42);
+  backdrop-filter: blur(2px);
+}
+
+.sheet[open] { animation: sheet-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.sheet[open]::backdrop { animation: fade-in 0.3s ease both; }
+
+@keyframes sheet-in {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sheet-body {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  padding: 24px 22px calc(26px + env(safe-area-inset-bottom));
+  box-shadow: var(--shadow-lift);
+  max-height: 88dvh;
+  overflow-y: auto;
+}
+
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.sheet-head .icon-btn { font-size: 22px; }
+
+.sheet-lede {
+  margin: 0 0 4px;
+  font-size: 15.5px;
+  color: var(--ink-soft);
+}
+
+.sheet-list {
+  margin: 20px 0 26px;
+  padding: 0;
+}
+
+.sheet-list dt {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--terracotta-deep);
+  padding-top: 15px;
+  border-top: 1px solid var(--line);
+}
+
+.sheet-list dd {
+  margin: 7px 0 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* Desktop gets a centred card rather than a bottom sheet. */
+@media (min-width: 560px) {
+  .sheet { margin: auto; }
+  .sheet-body { border-radius: var(--r-xl); }
+}

@@ -4,6 +4,7 @@ import Scanner from './components/Scanner';
 import Confirm from './components/Confirm';
 import Queue, { type Step } from './components/Queue';
 import Complete from './components/Complete';
+import About from './components/About';
 import { DEFAULT_CHUNK_PAISE, splitPaise } from './lib/split';
 import type { UpiPayload } from './lib/upi';
 
@@ -125,6 +126,7 @@ export default function App() {
             Start over
           </button>
         )}
+        <About />
       </header>
 
       {screen === 'home' && (

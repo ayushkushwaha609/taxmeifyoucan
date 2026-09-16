@@ -41,13 +41,6 @@ export default function Home({ onScan, onUpload }: Props) {
 
       <div className="grow" />
 
-      <div className="disclaimer">
-        <p className="fineprint">
-          Experimental concept, built for fun. Payment fees, limits and rules are decided entirely by
-          your payment provider and the merchant — splitting a payment here does not remove any fee,
-          tax, charge or limit. Nothing leaves your phone: no account, no server, no QR upload.
-        </p>
-      </div>
     </div>
   );
 }

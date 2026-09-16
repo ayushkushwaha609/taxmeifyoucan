@@ -6,6 +6,8 @@ A mobile-first PWA that reads a merchant's UPI QR and breaks the amount into
 ₹2,000 payment steps, launching one UPI intent per step. Built to the
 `UPI_Splitter_PRD_v1` spec.
 
+> The same disclaimer lives in the app, behind the (i) in the header.
+>
 > **This is a satirical/experimental payment-flow prototype.** It does not remove
 > any fee, tax, surcharge, charge or limit — those are set entirely by your
 > payment provider and the merchant. It cannot verify that a payment succeeded:
