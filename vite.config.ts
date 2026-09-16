@@ -2,9 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-// Served from https://<user>.github.io/taxmeifyoucan/, so every asset URL,
-// the manifest and the service worker scope have to carry that prefix.
-const BASE = process.env.DEPLOY_BASE ?? '/taxmeifyoucan/';
+// Root of the domain on Vercel. Set DEPLOY_BASE to deploy under a subpath.
+const BASE = process.env.DEPLOY_BASE ?? '/';
 
 export default defineConfig({
   base: BASE,

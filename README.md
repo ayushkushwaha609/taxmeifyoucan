@@ -58,13 +58,18 @@ analytics. No custom chunk size — ₹2,000 is fixed for v1.
 
 ## Deployment
 
-Pushed to `main` → GitHub Actions builds and publishes to GitHub Pages:
-**https://ayushkushwaha609.github.io/taxmeifyoucan/**
+Deployed on Vercel — it autodetects Vite, so the defaults are right:
 
-The site is served from a subpath, so `vite.config.ts` sets `base` (and the
-manifest's `start_url`/`scope`) to `/taxmeifyoucan/`. Override with
-`DEPLOY_BASE=/ npm run build` for a root-domain host.
+| Setting | Value |
+| --- | --- |
+| Framework preset | Vite |
+| Build command | `npm run build` |
+| Output directory | `dist` |
 
-HTTPS matters here: the camera scanner and the service worker both refuse to
-run on plain `http://`, so testing over the LAN via `npm run dev` gives you the
-upload path but not the camera.
+The app is served from the domain root. To host it under a subpath instead,
+build with `DEPLOY_BASE=/subpath/ npm run build` — that sets the Vite base and
+the manifest's `start_url`/`scope` together.
+
+HTTPS matters here: the camera scanner and the service worker both refuse to run
+on plain `http://`, so testing over the LAN with `npm run dev` gives you the
+upload path but not the camera. A Vercel preview URL gives you both.
